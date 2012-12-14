@@ -1,0 +1,26 @@
+{
+"version" : 1,
+
+ "logger" :
+ {
+	"type" : "STDOUT_LOGGER",
+	"flags" : "PLOG_INFO | PLOG_WARNING | PLOG_ERROR | PLOG_INTRO"
+	//"flags" : "PLOG_INTRO | PLOG_ALL"
+},
+	"services" :
+	{
+		"hello" : {
+				"app" : "hello@1",
+				"autodiscovery" : {
+					"type" : "FILE",
+					"source" : "/home/noxiouz/hosts"
+				},
+					"policy" : {
+					"urgent" : 0,
+					"deadline" : 45.0,
+					"timeout" : 40.000,
+					"max_retries" : -1
+					}
+		}			
+	}
+}
