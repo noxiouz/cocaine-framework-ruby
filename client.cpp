@@ -1,31 +1,22 @@
 #include "ruby.h"
 #include "cocaine/dealer/dealer.hpp"
 #include "boost/shared_ptr.hpp"
+#include "response_holder.hpp"
 
-static VALUE
-hello(VALUE self) {
-    return Qnil;
+template<typename T>
+static void
+dispose(void *ptr) {
+    using namespace cocaine::dealer;
+    if (ptr) {
+        T* _p = reinterpret_cast<T*>(ptr);
+        delete _p;
+    }
 }
+
 /* Response class */
 VALUE cResponse;
 
 using namespace cocaine::dealer;
-
-class response_holder_t{
-    public:
-        explicit response_holder_t(const boost::shared_ptr<response_t>& response_):
-                        m_response(response_)
-                {}
-
-        response_t* operator -> (){
-                return m_response.get();
-        }
-        response_t* get(){
-            return m_response.get();
-        }
-    private:
-        boost::shared_ptr<response_t> m_response;
-};
 
 static VALUE
 response_get(VALUE self, VALUE _timeout){
@@ -52,20 +43,11 @@ response_get(VALUE self, VALUE _timeout){
 /* Client class  */
 VALUE cClient;
 
-static void
-client_free(void *ptr) {
-    using namespace cocaine::dealer;
-    if (ptr) {
-        dealer_t* _p = reinterpret_cast<dealer_t*>(ptr);
-        delete _p;
-    }
-}
-
 VALUE 
 client_new(VALUE cls, VALUE path){
     using namespace cocaine::dealer;
     dealer_t* m_client = new dealer_t(STR2CSTR(path));
-    VALUE t_data = Data_Wrap_Struct(cls, 0, client_free, m_client);
+    VALUE t_data = Data_Wrap_Struct(cls, 0, dispose<dealer_t>, m_client);
     return t_data;
 }
 
@@ -82,7 +64,7 @@ client_send(VALUE self, VALUE service, VALUE handle, VALUE message){
             message_path_t(STR2CSTR(service), STR2CSTR(handle)),
             policy
         ));
-    VALUE t_data = Data_Wrap_Struct(cResponse, 0, 0, resp);
+    VALUE t_data = Data_Wrap_Struct(cResponse, 0, dispose<response_holder_t>, resp);
     return t_data;
 }
 /******************************************************************************/
