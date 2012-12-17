@@ -3,6 +3,24 @@
 #include "boost/shared_ptr.hpp"
 #include "response_holder.hpp"
 
+using namespace cocaine::dealer;
+
+extern "C" void Init_Client();
+
+/* Response class */
+VALUE cResponse;
+static VALUE response_get(VALUE self, VALUE _timeout);
+
+/* Client class  */
+VALUE cClient;
+VALUE client_new(VALUE cls, VALUE path);
+static VALUE client_send(VALUE self, VALUE service, VALUE handle, VALUE message);
+
+template<typename T> 
+static void dispose(void *ptr);
+
+/****************************************************************************/
+
 template<typename T>
 static void
 dispose(void *ptr) {
@@ -12,11 +30,6 @@ dispose(void *ptr) {
         delete _p;
     }
 }
-
-/* Response class */
-VALUE cResponse;
-
-using namespace cocaine::dealer;
 
 static VALUE
 response_get(VALUE self, VALUE _timeout){
@@ -39,9 +52,6 @@ response_get(VALUE self, VALUE _timeout){
 }
 
 /******************************************************************************/
-
-/* Client class  */
-VALUE cClient;
 
 VALUE 
 client_new(VALUE cls, VALUE path){
