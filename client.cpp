@@ -32,7 +32,7 @@ response_get(VALUE self, VALUE _timeout){
     if (success) {
         return rb_str_new(static_cast<char*>(chunk.data()), chunk.size());
     } else {
-        return rb_str_new2("EMPTY");
+        return rb_str_new2("");
     }
 
     return Qnil;
