@@ -1,3 +1,5 @@
+#ifndef _RESPONSE_HOLDER_HPP
+#define _RESPONSE_HOLDER_HPP
 
 #include "cocaine/dealer/dealer.hpp"
 
@@ -18,3 +20,5 @@ class response_holder_t{
     private:
         boost::shared_ptr<response_t> m_response;
 };
+
+#endif

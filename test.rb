@@ -1,7 +1,6 @@
 require 'Client'
 
-c = Client.new "hello_dealer1.json"
-c = Client.new "hello_dealer.json"
+c = Client.new "test/hello_dealer.json"
 r = c.send("hello", "hello", "test")
 r.get(30)
 for i in 0..50

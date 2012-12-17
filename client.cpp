@@ -1,7 +1,7 @@
 #include "ruby.h"
 #include <cocaine/dealer/dealer.hpp>
 #include <cocaine/dealer/utils/error.hpp>
-#include "response_holder.hpp"
+#include "c_response.hpp"
 
 using namespace cocaine::dealer;
 
@@ -9,7 +9,6 @@ extern "C" void Init_Client();
 
 /* Response class */
 VALUE cResponse;
-static VALUE response_get(VALUE self, VALUE _timeout);
 
 /* Client class  */
 VALUE cClient;
@@ -30,25 +29,6 @@ dispose(void *ptr) {
     }
 }
 
-static VALUE
-response_get(VALUE self, VALUE _timeout){
-    double timeout = NUM2DBL(_timeout);
-    bool success = false;
-    data_container chunk;
-
-    response_holder_t* resp;
-    Data_Get_Struct(self, response_holder_t, resp);
-
-    success = resp->get()->get(&chunk, timeout);
-
-    if (success) {
-        return rb_str_new(static_cast<char*>(chunk.data()), chunk.size());
-    } else {
-        return rb_str_new2("");
-    }
-
-    return Qnil;
-}
 
 /******************************************************************************/
 
