@@ -74,12 +74,12 @@ client_send(VALUE self, VALUE service, VALUE handle, VALUE message){
     response_holder_t* resp = NULL; 
     try {
         resp = new response_holder_t(m_client->send_message(
-                                                                                &message,
-                                                                                size,
-                                                                                message_path_t(STR2CSTR(service),
-                                                                                STR2CSTR(handle)),
-                                                                                policy
-                                                                            ));
+                                                            &message,
+                                                            size,
+                                                            message_path_t(STR2CSTR(service),
+                                                            STR2CSTR(handle)),
+                                                            policy
+                                                        ));
     } catch(const dealer_error& e) {
             rb_raise(rb_eRuntimeError, e.what());
             return Qnil;
