@@ -1,6 +1,6 @@
 #include "ruby.h"
-#include "cocaine/dealer/dealer.hpp"
-#include "boost/shared_ptr.hpp"
+#include <cocaine/dealer/dealer.hpp>
+#include <cocaine/dealer/utils/error.hpp>
 #include "response_holder.hpp"
 
 using namespace cocaine::dealer;
@@ -24,7 +24,6 @@ static void dispose(void *ptr);
 template<typename T>
 static void
 dispose(void *ptr) {
-    using namespace cocaine::dealer;
     if (ptr) {
         T* _p = reinterpret_cast<T*>(ptr);
         delete _p;
@@ -55,25 +54,39 @@ response_get(VALUE self, VALUE _timeout){
 
 VALUE 
 client_new(VALUE cls, VALUE path){
-    using namespace cocaine::dealer;
-    dealer_t* m_client = new dealer_t(STR2CSTR(path));
+    dealer_t* m_client = NULL; 
+    try {
+            m_client = new dealer_t(STR2CSTR(path));
+    } catch(const internal_error& e) {
+            rb_raise(rb_eRuntimeError, e.what());
+            return Qnil;
+    }
     VALUE t_data = Data_Wrap_Struct(cls, 0, dispose<dealer_t>, m_client);
     return t_data;
 }
 
 static VALUE
 client_send(VALUE self, VALUE service, VALUE handle, VALUE message){
-    using namespace cocaine::dealer;
     int size = 0;
     dealer_t* m_client;
     Data_Get_Struct(self, dealer_t, m_client);
     message_policy_t policy = m_client->policy_for_service(STR2CSTR(service));
-    response_holder_t* resp = new response_holder_t(m_client->send_message(
-            &message,
-            size,
-            message_path_t(STR2CSTR(service), STR2CSTR(handle)),
-            policy
-        ));
+    response_holder_t* resp = NULL; 
+    try {
+        resp = new response_holder_t(m_client->send_message(
+                                                                                &message,
+                                                                                size,
+                                                                                message_path_t(STR2CSTR(service),
+                                                                                STR2CSTR(handle)),
+                                                                                policy
+                                                                            ));
+    } catch(const dealer_error& e) {
+            rb_raise(rb_eRuntimeError, e.what());
+            return Qnil;
+    } catch(const internal_error& e) {
+            rb_raise(rb_eRuntimeError, e.what());
+            return Qnil;
+    }
     VALUE t_data = Data_Wrap_Struct(cResponse, 0, dispose<response_holder_t>, resp);
     return t_data;
 }
