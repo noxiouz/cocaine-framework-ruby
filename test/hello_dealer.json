@@ -1,12 +1,19 @@
 {
 "version" : 1,
 
- "logger" :
- {
-	"type" : "STDOUT_LOGGER",
-	"flags" : "PLOG_INFO | PLOG_WARNING | PLOG_ERROR | PLOG_INTRO"
-	//"flags" : "PLOG_INTRO | PLOG_ALL"
-},
+    "use_persistense" : true,
+     "logger" :
+    {
+	    "type" : "STDOUT_LOGGER",
+	    "flags" : "PLOG_INFO | PLOG_WARNING | PLOG_ERROR | PLOG_INTRO"
+    },
+    "persistent_storage" : {
+            "eblob_path" : "/tmp/eblobs",
+            "blob_size" : 2048,
+            "sync_interval" : 0,
+            "thread_pool_size" : 4,
+            "defrag_timeout" : 600
+   },
 	"services" :
 	{
 		"hello" : {
@@ -17,9 +24,10 @@
 				},
 					"policy" : {
 					"urgent" : 0,
-					"deadline" : 45.0,
+					"deadline" : 4.0,
 					"timeout" : 40.000,
-					"max_retries" : -1
+					"max_retries" : -1,
+                    "persistent" : true
 					}
 		}			
 	}
