@@ -10,3 +10,6 @@ end
 
 c.get_msg_count("hello")
 msg = c.get_messages("hello")
+msg[0]
+c.remove_stored_message(msg[0])
+c.get_msg_count("hello")
