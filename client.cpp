@@ -36,8 +36,8 @@ dispose(void *ptr) {
 }
 
 template<typename T>
-static T*
-get_pointer(VALUE from){
+T* 
+get_ctype_pointer(VALUE from){
     T* out;
     Data_Get_Struct(from, T, out);
     return out;
@@ -104,24 +104,23 @@ client_get_stored_messages(VALUE self, VALUE service_alias){
     if (false == msgs.empty()){
            VALUE messages_list = rb_ary_new();
            std::vector<message_t>::iterator it;
-           message_holder* _msg;
            for (it=msgs.begin(); it!=msgs.end(); ++it){
-                VALUE t_data = Data_Wrap_Struct(cMessage, 0, dispose<message_holder>, _msg);
+                VALUE t_data = Data_Wrap_Struct(cMessage, 0, dispose<message_holder>, new message_holder(*it));
                 rb_ary_push(messages_list, t_data);
-                return messages_list;
            }
+           return messages_list;
     }
     return Qnil;
 }
 
 static VALUE
 client_remove_stored_message(VALUE self, VALUE message){
-    dealer_t* m_client = get_pointer<dealer_t>(self);
-    message_holder* msg = get_pointer<message_holder>(message);
+    dealer_t* m_client = get_ctype_pointer<dealer_t>(self);
+    message_holder* msg = get_ctype_pointer<message_holder>(message);
     if (msg){
         std::cout<<"OKFFFFFFFFF";
     }
-    //m_client->remove_stored_message(msg->get());
+    m_client->remove_stored_message(msg->get());
     return Qnil; 
 }
 
