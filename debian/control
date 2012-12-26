@@ -1,0 +1,20 @@
+Source: cocaine-framework-ruby
+Section: misc
+Priority: extra
+Maintainer: Anton Tyurin <noxiouz@yandex-team.ru>
+Build-Depends: debhelper (>= 7), cdbs
+Build-Depends-Indep: ruby-pkg-tools (>=0.8), ruby1.8
+Standards-Version: 3.8.3
+Homepage: https://github.com/noxiouz/cocaine-framework-ruby
+
+Package: cocaine-framework-ruby1.8
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, ruby1.8
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: cocaine-framework-ruby
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends},libcocaine-framework-ruby1.8
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
