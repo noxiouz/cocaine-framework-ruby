@@ -54,13 +54,33 @@ get_ctype_pointer(VALUE from){
 
 
 inline bool
-Qbool_to_bool(VALUE condition){
+Rb_bool_to_bool(VALUE condition){
     if (TYPE(condition) == T_TRUE){
         return true;
     } else if (TYPE(condition) == T_FALSE){
         return false;
     } else {
         rb_raise(rb_eArgError, "a boolean is required");
+    }
+}
+
+inline std::string 
+Rb_string_to_string(VALUE _string){
+    if (TYPE(_string) == T_STRING){
+        return STR2CSTR(_string);
+    } else {
+        rb_raise(rb_eArgError, "a string is required");
+    }
+}
+
+inline double
+Rb_num_to_double(VALUE _num){
+    if (TYPE(_num) == T_FLOAT) {
+        return NUM2DBL(_num);
+    } else if (TYPE(_num) == T_FIXNUM){
+        return NUM2INT(_num);
+    } else {
+        rb_raise(rb_eArgError, "a string is required");
     }
 }
 
@@ -96,14 +116,31 @@ dealer_send(int argc, VALUE *argv, VALUE self){
             rb_raise(rb_eArgError, "a hash is required");
         }
         VALUE hash_item;
+
         hash_item = rb_hash_aref(hash, rb_str_new2("deadline"));
-        policy.deadline = NUM2DBL(hash_item);
+        if (! NIL_P(hash_item)){
+            policy.deadline = Rb_num_to_double(hash_item);
+        }
+
         hash_item = rb_hash_aref(hash, rb_str_new2("timeout"));
-        policy.timeout = NUM2DBL(hash_item);
+        if (! NIL_P(hash_item)){
+            policy.timeout = Rb_num_to_double(hash_item);
+        }
+
+        hash_item = rb_hash_aref(hash, rb_str_new2("max_retries"));
+        if (! NIL_P(hash_item)){
+            policy.max_retries = Rb_num_to_double(hash_item);
+        }
+
         hash_item = rb_hash_aref(hash, rb_str_new2("urgent"));
-        policy.urgent = Qbool_to_bool(hash_item);
+        if (! NIL_P(hash_item)){
+            policy.urgent = Rb_bool_to_bool(hash_item);
+        }
+
         hash_item = rb_hash_aref(hash, rb_str_new2("persistent"));
-        policy.persistent = Qbool_to_bool(hash_item);
+        if (! NIL_P(hash_item)){
+            policy.persistent = Rb_bool_to_bool(hash_item);
+        }
     }
     response_holder_t* resp = NULL; 
 

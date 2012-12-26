@@ -2,7 +2,7 @@ require 'Client'
 
 c = Client.new "test/hello_dealer.json"
 #r = c.send("hello", "hello", "test")
-t = {"deadline" => 2.0, "timeout" => 40.0, "urgent" => true, "persistent" => true}
+t = {"deadline" => 2.0, "timeout" => 40.0, "urgent" => true, "persistent" => true, "max_retries" => 3.1}
 s = "dsds"
 r = c.send("hello", "hello", "test", t)
 puts r.get(30)
