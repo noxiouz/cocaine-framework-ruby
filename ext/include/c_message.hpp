@@ -12,6 +12,4 @@ class message_holder {
         message_t msg;
 };
 
-
-
 #endif

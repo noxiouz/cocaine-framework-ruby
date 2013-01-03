@@ -1,6 +1,6 @@
 require 'mkmf'
 
-library_name = "Client"
+library_name = "_dealer"
 
 have_library("stdc++")
 have_library("cocaine-dealer")

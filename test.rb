@@ -1,4 +1,4 @@
-require 'Client'
+require '_dealer'
 
 c = Client.new "../test/hello_dealer.json"
 #r = c.send("hello", "hello", "test")

@@ -7,6 +7,17 @@ static void dispose(void *ptr);
 template<typename T>
 T* get_ctype_pointer(VALUE from);
 
+inline bool
+Rb_bool_to_bool(VALUE condition);
+
+inline double
+Rb_num_to_double(VALUE _num);
+
+inline std::string 
+Rb_string_to_string(VALUE _string);
+
+/****************************************************/
+
 template<typename T>
 static void
 dispose(void *ptr) {

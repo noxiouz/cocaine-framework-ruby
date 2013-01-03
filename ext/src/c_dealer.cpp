@@ -7,6 +7,8 @@
 #include <cocaine/dealer/dealer.hpp>
 #include <cocaine/dealer/utils/error.hpp>
 
+using namespace cocaine::dealer;
+
 VALUE 
 dealer_new(VALUE cls, VALUE path){
     dealer_t* m_dealer = NULL; 

@@ -10,7 +10,7 @@ VALUE cResponse;
 VALUE cClient;
 
 extern "C"
-void Init_Client(){
+void Init__dealer(){
     /* Dealer dealer class */
     cClient = rb_define_class("Client", rb_cObject);
     rb_define_singleton_method(cClient, "new", (VALUE(*)(...))&dealer_new, 1);
@@ -20,6 +20,7 @@ void Init_Client(){
     rb_define_method(cClient, "remove_stored_message", (VALUE(*)(...))&dealer_remove_stored_message, 1);
     /* Response class */
     cResponse = rb_define_class("Response", rb_cObject);
+    rb_define_singleton_method(cResponse, "new", (VALUE(*)(...))&response_new, 0);
     rb_define_method(cResponse, "get", (VALUE(*)(...))&response_get, 1);
     /* Message_t class*/
     cMessage = rb_define_class("Message", rb_cObject);
