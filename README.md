@@ -1,8 +1,8 @@
 Ruby framework for cocaine dealer
 =================================
 
-Class reference
----------------
+Dealer class reference
+----------------------
 ```ruby
 Dealer.new(path_to_config)
 ```    
@@ -32,5 +32,16 @@ Dealer.remove_stored_message(message)
  * **message**
 
 ```ruby
-Dealer.remove_message()
+Dealer.remove_message(message)
 ```
+ * **message**
+
+Respons class reference
+-----------------------
+
+Empty
+
+Message class referense
+-----------------------
+
+Empty
