@@ -1,4 +1,4 @@
-Ruby framework for cocaine dealer
+Ruby binding for cocaine dealer
 =================================
 
 Dealer class reference
@@ -31,14 +31,12 @@ Dealer.remove_stored_message(message)
 ```
  * **message**
 
-```ruby
-Dealer.remove_message(message)
-```
- * **message**
-
-Respons class reference
+Response class reference
 -----------------------
 
+```ruby
+Response.get()
+```
 Empty
 
 Message class referense
