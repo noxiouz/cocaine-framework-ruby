@@ -2,6 +2,7 @@
 #define C_MESSAGE
 
 #include "cocaine/dealer/message.hpp"
+using namespace cocaine::dealer;
 
 class message_holder {
     public:

@@ -5,8 +5,6 @@
 #include <cocaine/dealer/dealer.hpp>
 #include <response_holder.hpp>
 
-static VALUE response_get(VALUE self, VALUE _timeout);
-
 using namespace cocaine::dealer;
 
 static VALUE
