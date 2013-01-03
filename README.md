@@ -3,24 +3,34 @@ Ruby framework for cocaine dealer
 
 Class reference
 ---------------
+```ruby
+Dealer.new(path_to_config)
+```    
+ * **path_to_config**
 
-    Dealer.new(path_to_config)
-    
-path_to_config
-
-    Dealer.send(app, handle, message, hash)
-
- * **app**
+```ruby
+Dealer.send(service, handle, message, hashobject)
+```
+ * **service**
  + **handle**
  * **message**
  * **hash(optional)**
 
-    Dealer.get_msg_count
+```ruby
+Dealer.get_msg_count(service)
+```
+ * **service**
 
-sdsds
+```ruby
+Dealer.get_messages(service)
+```
+ * **service**
 
-    get_messages
+```ruby
+Dealer.remove_stored_message(message)
+```
+ * **message**
 
-ssss
-
-    remove_stored_message
+```ruby
+Dealer.remove_message()
+```
