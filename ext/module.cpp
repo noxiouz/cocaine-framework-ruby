@@ -1,11 +1,12 @@
-#ifndef _MODULE_HPP
-#define _MODULE_HPP
 #include "module.hpp"
 
+/* Message class */
 VALUE cMessage;
 
+/* Response class */
 VALUE cResponse;
 
+/* Client class */
 VALUE cClient;
 
 extern "C"
@@ -23,4 +24,3 @@ void Init_Client(){
     /* Message_t class*/
     cMessage = rb_define_class("Message", rb_cObject);
 }
-#endif

@@ -1,5 +1,5 @@
-#ifndef C_MESSAGE
-#define C_MESSAGE
+#ifndef _C_MESSAGE
+#define _C_MESSAGE
 
 #include "cocaine/dealer/message.hpp"
 using namespace cocaine::dealer;
