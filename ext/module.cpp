@@ -4,6 +4,7 @@
 
 #include "c_response.hpp"
 #include "c_message.hpp"
+#include "helpers.hpp"
 
 using namespace cocaine::dealer;
 
@@ -21,36 +22,6 @@ VALUE cClient;
 VALUE dealer_new(VALUE cls, VALUE path);
 //static VALUE dealer_send(VALUE self, VALUE message_hash);
 
-template<typename T> 
-static void dispose(void *ptr);
-
-template<typename T>
-T* get_ctype_pointer(VALUE from);
-
-/****************************************************************************
- *  helpers
- */
-
-
-template<typename T>
-static void
-dispose(void *ptr) {
-    if (ptr) {
-        T* _p = reinterpret_cast<T*>(ptr);
-        delete _p;
-    }
-}
-
-template<typename T>
-T* 
-get_ctype_pointer(VALUE from){
-    /* 
-     *  ADD throw() if out == NULL
-     * */
-    T* out;
-    Data_Get_Struct(from, T, out);
-    return out;
-}
 
 
 inline bool
