@@ -35,6 +35,7 @@ Dealer.remove_stored_message(message)
 Dealer.remove_stored_message_for(response)
 ```
  * **response**
+
 Response class reference
 -----------------------
 
