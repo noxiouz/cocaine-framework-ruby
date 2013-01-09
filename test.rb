@@ -5,6 +5,10 @@ c = Client.new "../test/hello_dealer.json"
 t = {"deadline" => 2.0, "timeout" => 40.0, "urgent" => true, "persistent" => true, "max_retries" => 3.1}
 s = "dsds"
 r = c.send("hello", "hello", "test", t)
+puts r.get(10)
+puts r.get(10)
+puts r.get(10)
+puts r.get(10)
 #puts r.get(30)
 #for i in 0..1
 #    r = c.send("hello", "hello", "test")

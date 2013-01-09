@@ -1,4 +1,5 @@
 #include "c_response.hpp"
+#include "cocaine/dealer/utils/error.hpp"
 
 using namespace cocaine::dealer;
 
@@ -16,14 +17,20 @@ response_get(VALUE self, VALUE _timeout){
 
     response_holder_t* resp;
     Data_Get_Struct(self, response_holder_t, resp);
-
-    success = resp->get()->get(&chunk, timeout);
+    try {
+        success = resp->get()->get(&chunk, timeout);
+    } catch(const dealer_error& e){
+            rb_raise(rb_eRuntimeError, e.what());
+            return Qnil;
+    } catch(const internal_error& e){
+            rb_raise(rb_eRuntimeError, e.what());
+            return Qnil;
+    }
 
     if (success) {
         return rb_str_new(static_cast<char*>(chunk.data()), chunk.size());
     } else {
         return rb_str_new2("");
     }
-
     return Qnil;
 }
