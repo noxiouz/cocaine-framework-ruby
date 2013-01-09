@@ -89,6 +89,25 @@ dealer_send(int argc, VALUE *argv, VALUE self){
 }
 
 VALUE
+dealer_manual_send(VALUE self, VALUE message_obj){
+    dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
+    message_holder* msg = get_ctype_pointer<message_holder>(message_obj);
+    response_holder_t* resp = NULL; 
+    try {
+        int size = 0;
+        resp = new response_holder_t(m_dealer->send_message(msg->get()));
+    } catch(const dealer_error& e) {
+            rb_raise(rb_eRuntimeError, e.what());
+            return Qnil;
+    } catch(const internal_error& e) {
+            rb_raise(rb_eRuntimeError, e.what());
+            return Qnil;
+    }
+    VALUE t_data = Data_Wrap_Struct(cResponse, 0, dispose<response_holder_t>, resp);
+    return t_data;
+}
+
+VALUE
 dealer_get_stored_messages_count(VALUE self, VALUE service_alias){
 /*
  * TODO:  Add try .. catch
@@ -126,6 +145,14 @@ dealer_remove_stored_message(VALUE self, VALUE message){
     dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
     message_holder* msg = get_ctype_pointer<message_holder>(message);
     m_dealer->remove_stored_message(msg->get());
+    return Qtrue; 
+}
+
+VALUE
+dealer_remove_stored_message_for(VALUE self, VALUE response){
+    dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
+    response_holder_t* resp = get_ctype_pointer<response_holder_t>(response);
+    m_dealer->remove_stored_message_for(resp->store_pointer());
     return Qtrue; 
 }
 

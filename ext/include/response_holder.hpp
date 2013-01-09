@@ -17,6 +17,10 @@ class response_holder_t{
         response_t* get(){
             return m_response.get();
         }
+
+        boost::shared_ptr<response_t> store_pointer(){
+            return m_response;
+        }
     private:
         boost::shared_ptr<response_t> m_response;
 };
