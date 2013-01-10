@@ -34,6 +34,9 @@ T* get_ctype_pointer(VALUE from){
      * */
     T* out;
     Data_Get_Struct(from, T, out);
+    if (false == out){
+        throw(std::exception());
+    }
     return out;
 }
 

@@ -7,6 +7,26 @@
 #include <cocaine/dealer/dealer.hpp>
 #include <cocaine/dealer/utils/error.hpp>
 
+
+#define RUBY_TRY \
+    extern VALUE ruby_errinfo; \
+    ruby_errinfo = Qnil; \
+    try {
+
+#define RUBY_CATCH \
+    } catch(const std::exception &e) { \
+        std::ostringstream o; \
+        o << "c++error: " << e.what(); \
+        ruby_errinfo = rb_exc_new2( \
+        rb_eRuntimeError, o.str().c_str()); \
+    } catch(...) { \
+        ruby_errinfo = rb_exc_new2( \
+         rb_eRuntimeError, "c++error: Unknown error"); \
+    } \
+      if(!NIL_P(ruby_errinfo)) { \
+      rb_exc_raise(ruby_errinfo); \
+    }
+
 using namespace cocaine::dealer;
 
 VALUE 
@@ -24,6 +44,8 @@ dealer_new(VALUE cls, VALUE path){
 
 VALUE
 dealer_send(int argc, VALUE *argv, VALUE self){
+    RUBY_TRY
+
     VALUE rb_message;
     VALUE rb_service;
     VALUE rb_handle;
@@ -86,10 +108,13 @@ dealer_send(int argc, VALUE *argv, VALUE self){
     }
     VALUE t_data = Data_Wrap_Struct(cResponse, 0, dispose<response_holder_t>, resp);
     return t_data;
+    RUBY_CATCH
 }
 
 VALUE
 dealer_manual_send(VALUE self, VALUE message_obj){
+    RUBY_TRY
+
     dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
     message_holder* msg = get_ctype_pointer<message_holder>(message_obj);
     response_holder_t* resp = NULL; 
@@ -105,6 +130,7 @@ dealer_manual_send(VALUE self, VALUE message_obj){
     }
     VALUE t_data = Data_Wrap_Struct(cResponse, 0, dispose<response_holder_t>, resp);
     return t_data;
+    RUBY_CATCH
 }
 
 VALUE
@@ -112,9 +138,11 @@ dealer_get_stored_messages_count(VALUE self, VALUE service_alias){
 /*
  * TODO:  Add try .. catch
  */
+    RUBY_TRY
     dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
     size_t s = m_dealer->stored_messages_count(STR2CSTR(service_alias));
     return INT2FIX(s);
+    RUBY_CATCH
 }
 
 VALUE
@@ -122,6 +150,7 @@ dealer_get_stored_messages(VALUE self, VALUE service_alias){
 /*
  * TODO:  Add try .. catch
  */
+    RUBY_TRY
     std::vector<message_t> msgs;
     dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
     m_dealer->get_stored_messages(STR2CSTR(service_alias), msgs);
@@ -135,6 +164,7 @@ dealer_get_stored_messages(VALUE self, VALUE service_alias){
            return messages_list;
     }
     return messages_list;
+    RUBY_CATCH
 }
 
 VALUE
@@ -142,17 +172,21 @@ dealer_remove_stored_message(VALUE self, VALUE message){
 /*
  * TODO:  Add try .. catch
  */
+    RUBY_TRY
     dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
     message_holder* msg = get_ctype_pointer<message_holder>(message);
     m_dealer->remove_stored_message(msg->get());
     return Qtrue; 
+    RUBY_CATCH
 }
 
 VALUE
 dealer_remove_stored_message_for(VALUE self, VALUE response){
+    RUBY_TRY
     dealer_t* m_dealer = get_ctype_pointer<dealer_t>(self);
     response_holder_t* resp = get_ctype_pointer<response_holder_t>(response);
     m_dealer->remove_stored_message_for(resp->store_pointer());
     return Qtrue; 
+    RUBY_CATCH
 }
 
