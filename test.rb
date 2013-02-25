@@ -10,11 +10,10 @@ puts r.get(10)
 puts r.get(10)
 puts r.get(10)
 puts r.get(30)
-for i in 0..20
+for i in 0..900000
     r = c.send("hello", "hello", "test")
     puts r.get(30)
 end
-
 puts "Check old messages:"
 puts c.get_msg_count("hello")
 msgs = c.get_messages("hello")
