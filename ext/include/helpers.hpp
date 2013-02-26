@@ -1,6 +1,25 @@
 #ifndef _HELPERS_HPP
 #define _HELPERS_HPP
 
+#define RUBY_TRY \
+    extern VALUE ruby_errinfo; \
+    ruby_errinfo = Qnil; \
+    try {
+
+#define RUBY_CATCH \
+    } catch(const std::exception &e) { \
+        std::ostringstream o; \
+        o << "c++error: " << e.what(); \
+        ruby_errinfo = rb_exc_new2( \
+        rb_eRuntimeError, o.str().c_str()); \
+    } catch(...) { \
+        ruby_errinfo = rb_exc_new2( \
+         rb_eRuntimeError, "c++error: Unknown error"); \
+    } \
+      if(!NIL_P(ruby_errinfo)) { \
+      rb_exc_raise(ruby_errinfo); \
+    }
+
 template<typename T> 
 static void dispose(void *ptr);
 

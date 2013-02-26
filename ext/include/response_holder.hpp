@@ -3,7 +3,7 @@
 
 #include "cocaine/dealer/dealer.hpp"
 
-using namespace cocaine::dealer;
+namespace cocaine { namespace dealer {
 
 class response_holder_t{
     public:
@@ -25,4 +25,5 @@ class response_holder_t{
         boost::shared_ptr<response_t> m_response;
 };
 
+}}
 #endif
