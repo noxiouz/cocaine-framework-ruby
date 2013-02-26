@@ -11,6 +11,7 @@ response_new(VALUE cls){
 
 VALUE
 response_get(VALUE self, VALUE _timeout){
+    RUBY_TRY
     double timeout = NUM2DBL(_timeout);
     bool success = false;
     data_container chunk;
@@ -33,4 +34,5 @@ response_get(VALUE self, VALUE _timeout){
         return rb_str_new2("");
     }
     return Qnil;
+    RUBY_CATCH
 }

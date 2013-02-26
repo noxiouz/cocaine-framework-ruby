@@ -4,6 +4,7 @@
 #include <ruby.h>
 #include <cocaine/dealer/dealer.hpp>
 #include <response_holder.hpp>
+#include "helpers.hpp"
 #include <iostream>
 
 VALUE
