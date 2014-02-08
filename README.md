@@ -1,6 +1,8 @@
 Ruby binding for cocaine dealer
 =================================
 
+This repo is deprecated. Use cocaine-framework-ruby from http://github.com/cocaine
+
 Dealer class reference
 ----------------------
 ```ruby
